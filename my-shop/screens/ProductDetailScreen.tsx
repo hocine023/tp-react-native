@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from 'react';
 import {
   ScrollView,
   Text,
@@ -6,23 +6,36 @@ import {
   StyleSheet,
   Alert,
   TouchableOpacity,
-} from "react-native";
-import { RouteProp } from "@react-navigation/native";
-import { RootStackParamList } from "../types/navigation";
+} from 'react-native';
+import { RouteProp } from '@react-navigation/native';
+import { RootStackParamList } from '../types/navigation';
 
-type ProductDetailRouteProp = RouteProp<RootStackParamList, "ProductDetail">;
+type ProductDetailRouteProp = RouteProp<RootStackParamList, 'ProductDetail'>;
 
 interface Props {
   route: ProductDetailRouteProp;
 }
 
-const ProductDetailScreen: React.FC<Props> = ({ route }: Props) => {
+const ProductDetailScreen: React.FC<Props> = ({ route }) => {
   const { product } = route.params;
+  const [isAdded, setIsAdded] = useState<boolean>(false);
 
-  const handleAddToCart = (): void => {
-    Alert.alert("Confirmation", `${product.name} a bien été ajouté au panier`, [
-      { text: "OK", style: "default" },
-    ]);
+  const handleCartAction = (): void => {
+    if (!isAdded) {
+      setIsAdded(true);
+      Alert.alert(
+        'Succès',
+        `${product.name} a été ajouté au panier`,
+        [{ text: 'OK', style: 'default' }]
+      );
+    } else {
+      setIsAdded(false);
+      Alert.alert(
+        'Information',
+        `${product.name} a été retiré du panier`,
+        [{ text: 'OK', style: 'default' }]
+      );
+    }
   };
 
   return (
@@ -32,17 +45,23 @@ const ProductDetailScreen: React.FC<Props> = ({ route }: Props) => {
       <Text style={styles.category}>Catégorie : {product.category}</Text>
       <Text style={styles.price}>Prix : {product.price.toFixed(2)} €</Text>
       <Text style={styles.stock}>
-        {product.inStock ? "Disponible en stock" : "Rupture de stock"}
+        {product.inStock ? 'Disponible en stock' : 'Rupture de stock'}
       </Text>
       <Text style={styles.descriptionTitle}>Description</Text>
       <Text style={styles.description}>{product.description}</Text>
 
       <TouchableOpacity
-        style={[styles.button, !product.inStock && styles.buttonDisabled]}
-        onPress={handleAddToCart}
+        style={[
+          styles.button,
+          !product.inStock && styles.buttonDisabled,
+          isAdded && styles.removeButton,
+        ]}
+        onPress={handleCartAction}
         disabled={!product.inStock}
       >
-        <Text style={styles.buttonText}>Ajouter au panier</Text>
+        <Text style={styles.buttonText}>
+          {isAdded ? 'Retirer du panier' : 'Ajouter au panier'}
+        </Text>
       </TouchableOpacity>
     </ScrollView>
   );
@@ -51,19 +70,19 @@ const ProductDetailScreen: React.FC<Props> = ({ route }: Props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     padding: 20,
   },
   image: {
     width: 180,
     height: 180,
-    alignSelf: "center",
+    alignSelf: 'center',
     borderRadius: 12,
     marginBottom: 20,
   },
   title: {
     fontSize: 26,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 10,
   },
   category: {
@@ -72,8 +91,8 @@ const styles = StyleSheet.create({
   },
   price: {
     fontSize: 18,
-    fontWeight: "bold",
-    color: "#2e7d32",
+    fontWeight: 'bold',
+    color: '#2e7d32',
     marginBottom: 6,
   },
   stock: {
@@ -82,7 +101,7 @@ const styles = StyleSheet.create({
   },
   descriptionTitle: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 8,
   },
   description: {
@@ -91,17 +110,20 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   button: {
-    backgroundColor: "#2e7d32",
+    backgroundColor: '#2e7d32',
     paddingVertical: 14,
     borderRadius: 10,
-    alignItems: "center",
+    alignItems: 'center',
+  },
+  removeButton: {
+    backgroundColor: '#c62828',
   },
   buttonDisabled: {
-    backgroundColor: "#9e9e9e",
+    backgroundColor: '#9e9e9e',
   },
   buttonText: {
-    color: "#fff",
-    fontWeight: "bold",
+    color: '#fff',
+    fontWeight: 'bold',
     fontSize: 16,
   },
 });
