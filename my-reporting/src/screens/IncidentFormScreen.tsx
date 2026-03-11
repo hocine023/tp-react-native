@@ -23,11 +23,13 @@ export const IncidentFormScreen: React.FC = () => {
   const [location, setLocation] = useState<Coordinates | null>(null);
   const [description, setDescription] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [mapKey, setMapKey] = useState(0);
 
   const resetForm = () => {
     setPhotoUri(null);
     setLocation(null);
     setDescription("");
+    setMapKey((prev) => prev + 1);
   };
 
   const addEventToCalendar = async (coords: Coordinates) => {
@@ -132,7 +134,7 @@ export const IncidentFormScreen: React.FC = () => {
       )}
 
       <Text style={styles.label}>2. Position GPS</Text>
-      <LocationMap onLocationFound={setLocation} />
+      <LocationMap key={mapKey} onLocationFound={setLocation} />
 
       <Text style={styles.label}>3. Description</Text>
       <TextInput
