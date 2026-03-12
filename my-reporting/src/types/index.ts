@@ -1,9 +1,9 @@
-export interface Coordinates {
+export type Coordinates {
   latitude: number;
   longitude: number;
 }
 
-export interface Incident {
+export type Incident {
   id?: string;
   description: string;
   photoUri: string;
@@ -11,7 +11,7 @@ export interface Incident {
   timestamp: number;
 }
 
-export interface ApiResponse<T> {
+export type ApiResponse<T> {
   success: boolean;
   data?: T;
   error?: string;

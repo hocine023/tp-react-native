@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { CameraView, useCameraPermissions } from "expo-camera";
 
-interface CameraCaptureProps {
+type CameraCaptureProps {
   onPictureTaken: (uri: string) => void;
 }
 
