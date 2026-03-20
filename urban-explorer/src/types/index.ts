@@ -28,13 +28,13 @@ export interface VisitPlan {
   [placeId: string]: string; // YYYY-MM-DD
 }
 
-export type RootDiscoveryStackParamList {
+export type RootDiscoveryStackParamList = {
   DiscoveryList: undefined;
   Detail: { place: Place };
-}
+};
 
-export type RootTabParamList {
+export type RootTabParamList = {
   DiscoveryTab: undefined;
   Map: undefined;
   Profile: undefined;
-}
+};
